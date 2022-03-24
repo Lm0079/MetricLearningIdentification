@@ -35,7 +35,7 @@ def evaluateModel(args):
 	test_embeddings, test_labels = inferEmbeddings(args, test_dataset, "test")
 
 	# Classify them
-	accuracy = KNNAccuracy(train_embeddings, train_labels, test_embeddings, test_labels)
+	accuracy = KNNAccuracy(train_embeddings, train_labels, test_embeddings, test_labels,args.n_neighbours)
 
 	# Write it out to the console so that subprocess can pick them up and close
 	sys.stdout.write(f"Accuracy={str(accuracy)}")
@@ -44,25 +44,37 @@ def evaluateModel(args):
 
 # Use KNN to classify the embedding space
 def KNNAccuracy(train_embeddings, train_labels, test_embeddings, test_labels, n_neighbors=5):
-    # Define the KNN classifier
-    neigh = KNeighborsClassifier(n_neighbors=n_neighbors, n_jobs=-4)
+	# Define the KNN classifier
+	neigh = KNeighborsClassifier(n_neighbors=n_neighbors, n_jobs=-4)
 
-    # Give it the embeddings and labels of the training set
-    neigh.fit(train_embeddings, train_labels)
+	# Give it the embeddings and labels of the training set
+	neigh.fit(train_embeddings, train_labels)
 
-    # Total number of testing instances
-    total = len(test_labels-1)
+	# Total number of testing instances
+	total = len(test_labels-1)
 
-    # Get the predictions from KNN
-    predictions = neigh.predict(test_embeddings)
+	# Get the predictions from KNN
+	predictions = neigh.predict(test_embeddings)
 
-    # How many were correct?
-    correct = (predictions == test_labels).sum()
+	# How many were correct?
+	correct = (predictions == test_labels).sum()
 
-    # Compute accuracy
-    accuracy = (float(correct) / total) * 100
+	# Compute accuracy
+	accuracy = (float(correct) / total) * 100
+	uniqueLabels = set(test_labels)
+	# How many were correct per class?
+	
+	for label in uniqueLabels:
+		
+		correct = torch.tensor((predictions == test_labels) * (test_labels == label)).float().sum()
+		total = max((test_labels == label).sum(),1)
+		
+	# Compute accuracy
 
-    return accuracy
+		class_accuracy = (float(correct) / total) * 100
+		print(f"Class : {str(label)} , Accuracy = {str(class_accuracy)}")
+
+	return accuracy
 
 # Infer the embeddings for a given dataset
 def inferEmbeddings(args, dataset, split):
@@ -125,7 +137,7 @@ if __name__ == '__main__':
 	parser.add_argument('--save_path', type=str, required=True,
 						help="Where to store the embeddings")
 
-	parser.add_argument('--dataset', nargs='?', type=str, default='OpenSetCows2020', 
+	parser.add_argument('--dataset', nargs='?', type=str, default='Zebra', 
 						help='Which dataset to use')
 	parser.add_argument('--batch_size', nargs='?', type=int, default=16,
 						help='Batch Size')
@@ -135,7 +147,9 @@ if __name__ == '__main__':
 						help="The current fold we'd like to test on")
 	parser.add_argument('--save_embeddings', type=bool, default=True,
 						help="Should we save the embeddings to file")
+	parser.add_argument('--n_neighbours', type=int, default=5,
+						help="Number of neightbours used in KNN")
 	args = parser.parse_args()
-
+	print("KKN neighbour value:"+ str(args.n_neighbours))
 	# Let's infer some embeddings
 	evaluateModel(args)

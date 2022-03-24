@@ -15,9 +15,9 @@ import matplotlib.patheffects as PathEffects
 def scatter(x, labels, filename):
 	# Get the number of classes (number of unique labels)
 	num_classes = np.unique(labels).shape[0]
-
+	max = int(np.unique(labels).max())
 	# Choose a color palette with seaborn.
-	palette = np.array(sns.color_palette("hls", num_classes+1))
+	palette = np.array(sns.color_palette("hls", max+1))
 
 	# Map the colours to different labels
 	label_colours = np.array([palette[int(labels[i])] for i in range(labels.shape[0])])
