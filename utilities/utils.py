@@ -11,12 +11,15 @@ import torch
 from torch import optim
 from torch.utils import data
 
+
 # Import our own classes
 from utilities.loss import *
 from utilities.mining_utils import *
 from models.TripletResnet import TripletResnet50
 from models.TripletResnetSoftmax import TripletResnet50Softmax
 from datasets.OpenSetCows2020.OpenSetCows2020 import OpenSetCows2020
+from datasets.Zebra.Zebra import Zebra
+from datasets.Zebra.Zebra2 import Zebra2
 
 """
 File contains a collection of utility functions used for training and evaluation
@@ -150,6 +153,7 @@ class Utilities:
         run_str += f" --current_fold={self.args.current_fold}"  # The current fold number
         run_str += f" --folds_file={self.args.folds_file}"  # Where to find info about this fold
         run_str += f" --save_path={self.args.fold_out_path}"    # Where to store the embeddings
+        run_str += f" --n_neighbours={self.args.n_neighbours}"  
 
         # Let's run the command, decode and save the result
         accuracy = subprocess.check_output([run_str], shell=True)
@@ -183,8 +187,23 @@ class Utilities:
                                         transform=True,
                                         combine=True,
                                         suppress_info=False )
-        elif args.dataset == "ADD YOUR DATASET HERE":
-            pass
+        elif args.dataset == "Zebra":
+            dataset = Zebra( args.current_fold, 
+                                        args.folds_file, 
+                                        split=split, 
+                                        transform=True,
+                                        combine=False,
+                                        suppress_info=False )
+        elif args.dataset == "Zebra2":
+            if train: split = "train"
+            else: split = "test"
+            dataset = Zebra2( args.current_fold, 
+                                        args.folds_file, 
+                                        split=split, 
+                                        transform=True,
+                                        combine=True,
+                                        suppress_info=False )
+            
         else:
             print(f"Dataset choice not recognised, exiting.")
             sys.exit(1)

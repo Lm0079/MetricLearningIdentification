@@ -143,6 +143,8 @@ if __name__ == '__main__':
 						help="Weight decay")
 	parser.add_argument('--triplet_margin', type=float, default=0.5,
 						help="Margin parameter for triplet loss")
+	parser.add_argument('--n_neighbours',type=int, default=5,
+						help="KNN neighbour parameter")
 
 	# Training settings
 	parser.add_argument('--eval_freq', nargs='?', type=int, default=2,
