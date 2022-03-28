@@ -114,7 +114,7 @@ if __name__ == '__main__':
 						help="Number of folds to cross validate across")
 	parser.add_argument('--fold_number', type=int, default=0,
 						help="The fold number to START at")
-	parser.add_argument('--dataset', type=str, default='OpenSetCows2020',
+	parser.add_argument('--dataset', type=str, default='Zebra',
 						help='Which dataset to use')
 	parser.add_argument('--model', type=str, default='TripletResnetSoftmax',
 						help='Which model to use: [TripletResnetSoftmax, TripletResnet]')
@@ -145,7 +145,8 @@ if __name__ == '__main__':
 						help="Margin parameter for triplet loss")
 	parser.add_argument('--n_neighbours',type=int, default=5,
 						help="KNN neighbour parameter")
-
+	parser.add_argument('--triplet_lambda', type=float, default=0.01,
+						help="Lambda parameter for Softmax losses")
 	# Training settings
 	parser.add_argument('--eval_freq', nargs='?', type=int, default=2,
 						help='Frequency for evaluating model [epochs num]')

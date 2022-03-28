@@ -61,9 +61,9 @@ def plotEmbeddings(args):
 	reduction = visualiser.fit_transform(embeddings['embeddings'])
 
 	print("Visualisation computed")
-
+	filename=  os.path.basename(args.embeddings_file)[:-4]+f"_preplexity-{args.perplexity}"
 	# Plot the results and save to file
-	scatter(reduction, embeddings['labels'], os.path.basename(args.embeddings_file)[:-4])
+	scatter(reduction, embeddings['labels'], filename)
 
 # Main/entry method
 if __name__ == '__main__':

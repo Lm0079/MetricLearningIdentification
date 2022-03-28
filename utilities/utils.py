@@ -80,15 +80,15 @@ class Utilities:
         if args.loss_function == "TripletLoss":
             loss_fn = TripletLoss(margin=args.triplet_margin)
         elif args.loss_function == "TripletSoftmaxLoss":
-            loss_fn = TripletSoftmaxLoss(margin=args.triplet_margin)
+            loss_fn = TripletSoftmaxLoss(margin=args.triplet_margin,lambda_factor=args.triplet_lambda)
         elif args.loss_function == "OnlineTripletLoss": 
             loss_fn = OnlineTripletLoss(triplet_selector, margin=args.triplet_margin)
         elif args.loss_function == "OnlineTripletSoftmaxLoss":
-            loss_fn = OnlineTripletSoftmaxLoss(triplet_selector, margin=args.triplet_margin)
+            loss_fn = OnlineTripletSoftmaxLoss(triplet_selector, margin=args.triplet_margin,lambda_factor=args.triplet_lambda)
         elif args.loss_function == "OnlineReciprocalTripletLoss":
             loss_fn = OnlineReciprocalTripletLoss(triplet_selector)
         elif args.loss_function == "OnlineReciprocalSoftmaxLoss":
-            loss_fn = OnlineReciprocalSoftmaxLoss(triplet_selector)
+            loss_fn = OnlineReciprocalSoftmaxLoss(triplet_selector,lambda_factor=args.triplet_lambda)
         else:
             print(f"Loss function choice not recognised, exiting.")
             sys.exit(1)
