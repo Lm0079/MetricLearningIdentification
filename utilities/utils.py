@@ -52,9 +52,9 @@ class Utilities:
 
         # Setup the selected model
         if args.model == "TripletResnetSoftmax": 
-            model = TripletResnet50Softmax(pretrained=True, num_classes=dataset.getNumClasses())
+            model = TripletResnet50Softmax(pretrained=True, num_classes=dataset.getNumClasses(),embedding_size=args.embedding_size)
         elif args.model == "TripletResnet": 
-            model = TripletResnet50(pretrained=True, num_classes=dataset.getNumClasses())
+            model = TripletResnet50(pretrained=True, num_classes=dataset.getNumClasses(),embedding_size=args.embedding_size)
         else:
             print(f"Model choice: \"{args.model}\" not recognised, exiting.")
             sys.exit(1)
@@ -203,7 +203,7 @@ class Utilities:
                                         transform=True,
                                         combine=True,
                                         suppress_info=False )
-            
+ 
         else:
             print(f"Dataset choice not recognised, exiting.")
             sys.exit(1)

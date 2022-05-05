@@ -1,8 +1,8 @@
 #!/bin/sh
-#SBATCH --job-name dml-param-200
+#SBATCH --job-name dml-param
 #SBATCH --partition gpu
 #SBATCH --gres gpu:1
-#SBATCH --time 7-00:00
+#SBATCH --time 0-12:00
 #SBATCH --mem 64GB
 
 #SBATCH --mail-type=ALL

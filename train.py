@@ -127,10 +127,12 @@ if __name__ == '__main__':
 						OnlineReciprocalSoftmaxLoss]')
 
 	# Hyperparameters
+	parser.add_argument('--img_size', nargs='?', type=int, default=224, 
+						help='input image size')
 	parser.add_argument('--img_rows', nargs='?', type=int, default=224, 
 						help='Height of the input image')
 	parser.add_argument('--img_cols', nargs='?', type=int, default=224, 
-						help='Height of the input image')
+						help='Width of the input image')
 	parser.add_argument('--embedding_size', nargs='?', type=int, default=128, 
 						help='dense layer size for inference')
 	parser.add_argument('--num_epochs', nargs='?', type=int, default=500, 

@@ -45,8 +45,9 @@ def evaluateModel(args):
 # Use KNN to classify the embedding space
 def KNNAccuracy(train_embeddings, train_labels, test_embeddings, test_labels, n_neighbors=5):
 	# Define the KNN classifier
-	neigh = KNeighborsClassifier(n_neighbors=n_neighbors, n_jobs=-4)
-
+	
+	neigh = KNeighborsClassifier(n_neighbors=n_neighbors, n_jobs=-4,weights="distance")
+		
 	# Give it the embeddings and labels of the training set
 	neigh.fit(train_embeddings, train_labels)
 
@@ -147,8 +148,12 @@ if __name__ == '__main__':
 						help="The current fold we'd like to test on")
 	parser.add_argument('--save_embeddings', type=bool, default=True,
 						help="Should we save the embeddings to file")
+	parser.add_argument('--distance_metric', type=bool, default=False,
+						help="Should we use distance metric")
 	parser.add_argument('--n_neighbours', type=int, default=5,
 						help="Number of neightbours used in KNN")
+	parser.add_argument('--img_size', nargs='?', type=int, default=224, 
+						help='input image size')
 	args = parser.parse_args()
 	print("KKN neighbour value:"+ str(args.n_neighbours))
 	# Let's infer some embeddings

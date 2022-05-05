@@ -1,9 +1,13 @@
 ## Mac files
 *.DS_Store
-
+*.csv
 *.pyc
 !**/__pycache__/
-
+*.png
 # Dataset data
 datasets/OpenSetCows2020/images/
 datasets/OpenSetCows2020/splits/
+output/
+
+slurm*
+*.log
