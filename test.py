@@ -16,8 +16,7 @@ from torch.autograd import Variable
 from utilities.utils import Utilities
 from models.embeddings import resnet50
 
-# Import our dataset class
-from datasets.OpenSetCows2020.OpenSetCows2020 import OpenSetCows2020
+
 
 """
 File for inferring the embeddings of the test portion of a selected database and
@@ -43,7 +42,7 @@ def evaluateModel(args):
 	sys.exit(0)
 
 # Use KNN to classify the embedding space
-def KNNAccuracy(train_embeddings, train_labels, test_embeddings, test_labels, n_neighbors=5):
+def KNNAccuracy(train_embeddings, train_labels, test_embeddings, test_labels, n_neighbors):
 	# Define the KNN classifier
 	
 	neigh = KNeighborsClassifier(n_neighbors=n_neighbors, n_jobs=-4,weights="distance")
@@ -92,8 +91,6 @@ def inferEmbeddings(args, dataset, split):
 	# Embeddings/labels to be stored on the testing set
 	outputs_embedding = np.zeros((1,args.embedding_size))
 	labels_embedding = np.zeros((1))
-	total = 0
-	correct = 0
 
 	# Iterate through the testing portion of the dataset and get
 	for images, _, _, labels, _ in tqdm(data_loader, desc=f"Inferring {split} embeddings"):
@@ -150,7 +147,7 @@ if __name__ == '__main__':
 						help="Should we save the embeddings to file")
 	parser.add_argument('--distance_metric', type=bool, default=False,
 						help="Should we use distance metric")
-	parser.add_argument('--n_neighbours', type=int, default=5,
+	parser.add_argument('--n_neighbours', type=int, default=1,
 						help="Number of neightbours used in KNN")
 	parser.add_argument('--img_size', nargs='?', type=int, default=224, 
 						help='input image size')

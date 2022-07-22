@@ -29,7 +29,7 @@ class Zebra(data.Dataset):
 		"""
 
 		# The root directory for the dataset itself
-		self.__root = "/user/work/gh18931/diss/datasets/grevvy_dataset/final/best_param"
+		self.__root = '/user/work/gh18931/diss/datasets/workshop/tex_80'
 	
 
 		# The fold we're currently considering

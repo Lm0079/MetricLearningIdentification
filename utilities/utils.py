@@ -17,9 +17,7 @@ from utilities.loss import *
 from utilities.mining_utils import *
 from models.TripletResnet import TripletResnet50
 from models.TripletResnetSoftmax import TripletResnet50Softmax
-from datasets.OpenSetCows2020.OpenSetCows2020 import OpenSetCows2020
 from datasets.Zebra.Zebra import Zebra
-from datasets.Zebra.Zebra2 import Zebra2
 
 """
 File contains a collection of utility functions used for training and evaluation
@@ -180,29 +178,14 @@ class Utilities:
         else: split = "test"
 
          # Load the selected dataset
-        if args.dataset == "OpenSetCows2020":
-            dataset = OpenSetCows2020(  args.current_fold, 
-                                        args.folds_file, 
-                                        split=split, 
-                                        transform=True,
-                                        combine=True,
-                                        suppress_info=False )
-        elif args.dataset == "Zebra":
+        if args.dataset == "Zebra":
             dataset = Zebra( args.current_fold, 
                                         args.folds_file, 
                                         split=split, 
                                         transform=True,
                                         combine=False,
                                         suppress_info=False )
-        elif args.dataset == "Zebra2":
-            if train: split = "train"
-            else: split = "test"
-            dataset = Zebra2( args.current_fold, 
-                                        args.folds_file, 
-                                        split=split, 
-                                        transform=True,
-                                        combine=True,
-                                        suppress_info=False )
+        
  
         else:
             print(f"Dataset choice not recognised, exiting.")
