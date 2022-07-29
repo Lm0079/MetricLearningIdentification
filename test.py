@@ -152,6 +152,5 @@ if __name__ == '__main__':
 	parser.add_argument('--img_size', nargs='?', type=int, default=224, 
 						help='input image size')
 	args = parser.parse_args()
-	print("KKN neighbour value:"+ str(args.n_neighbours))
 	# Let's infer some embeddings
 	evaluateModel(args)

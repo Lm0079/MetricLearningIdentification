@@ -31,15 +31,14 @@ def load_class_dict_csv(file):
 			line_count = 0
 			lines = list(w)
 			for row in lines:
-				
 				class_names[row["class"]] = row["animal_id"]
-
 	except IOError:
 		print("I/O error")
 	
 	return class_names
+
 def get_predictions(data_loader, num_classes):
-		# Define our embeddings model
+	# Define our embeddings model
 	model = resnet50(pretrained=True, num_classes=num_classes, ckpt_path=args.model_path, embedding_size=args.embedding_size)
 	
 	# Put the model on the GPU and in evaluation mode
@@ -81,22 +80,18 @@ def clusterData(args):
 	num_classes = np.unique(train_labels).shape[0]
 	classes = load_class_dict_csv(args.class_labels)
 
-	dataset = Pipeline( args.input,transform=True)
+	dataset = Pipeline(args.input,transform=True)
 	data_loader = data.DataLoader(dataset, batch_size=args.batch_size, num_workers=6, shuffle=False)
-	print("Loading Model and making predictions")
 	outputs_embedding, filenames = get_predictions(data_loader, num_classes)
 
 	# Classify them
-
-	neigh = KNeighborsClassifier(n_neighbors=2, n_jobs=-4)
+	neigh = KNeighborsClassifier(n_neighbors=args.n_neighbours, n_jobs=-4)
 
 	# Give it the embeddings and labels of the training set
 	neigh.fit(train_embeddings, train_labels)
 
 	# Get the predictions from KNN
-	
 	predictions = neigh.predict(outputs_embedding)
-	print(predictions)
 	prediction_id = [classes[str(int(i))] for i in predictions]
 	output_csvfile = os.path.join(args.save_path,"Predictions.csv")
 	print("Writing predictions to csv file:"+str(output_csvfile))
@@ -129,7 +124,7 @@ if __name__ == '__main__':
 						help='Batch Size')
 	parser.add_argument('--save_embeddings', type=bool, default=True,
 						help="Should we save the embeddings to file")
-	parser.add_argument('--n_neighbours', type=int, default=5,
+	parser.add_argument('--n_neighbours', type=int, default=1,
 						help="Number of neightbours used in KNN")
 	parser.add_argument('--train_embeddings', type=str, required=True,
 						help="")				
